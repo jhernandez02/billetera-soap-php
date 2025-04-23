@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="BilleteraService"
+    targetNamespace="urn:localhost"
+    xmlns:tns="urn:localhost"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+    <!-- Tipos comunes para Item y Map -->
+    <types>
+        <xsd:schema targetNamespace="urn:localhost">
+            <!-- Definición del tipo Item -->
+            <xsd:complexType name="Item">
+                <xsd:sequence>
+                    <xsd:element name="key" type="xsd:string"/>
+                    <xsd:element name="value" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <!-- Definición de la colección de Items -->
+            <xsd:complexType name="ItemArray">
+                <xsd:sequence>
+                    <xsd:element name="item" type="tns:Item" minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <!-- Definición del tipo Map (para respuesta) -->
+            <xsd:complexType name="Map">
+                <xsd:sequence>
+                    <xsd:element name="item" minOccurs="0" maxOccurs="unbounded">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="key" type="xsd:string"/>
+                                <xsd:element name="value" type="xsd:string"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <!-- Definición para la respuesta-->
+            <xsd:complexType name="MapResponse">
+                <xsd:sequence>
+                    <xsd:element name="success" type="xsd:boolean"/>
+                    <xsd:element name="cod_error" type="xsd:string"/>
+                    <xsd:element name="message_error" type="xsd:string"/>
+                    <xsd:element name="data" type="tns:Map"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:schema>
+    </types>
+
+    <!-- Mensajes para cargarSaldo -->
+    <message name="cargarSaldoRequest">
+        <part name="data" type="tns:ItemArray"/>
+    </message>
+    <message name="cargarSaldoResponse">
+        <part name="return" type="tns:MapResponse"/>
+    </message>
+
+    <!-- Mensajes para realizarCompra -->
+    <message name="realizarCompraRequest">
+        <part name="data" type="tns:ItemArray"/>
+    </message>
+    <message name="realizarCompraResponse">
+        <part name="return" type="tns:MapResponse"/>
+    </message>
+
+    <!-- Mensajes para confirmarCompra -->
+    <message name="confirmarCompraRequest">
+        <part name="data" type="tns:ItemArray"/>
+    </message>
+    <message name="confirmarCompraResponse">
+        <part name="return" type="tns:MapResponse"/>
+    </message>
+
+    <!-- Mensajes para consultarSaldo -->
+    <message name="consultarSaldoRequest">
+        <part name="data" type="tns:ItemArray"/>
+    </message>
+    <message name="consultarSaldoResponse">
+        <part name="return" type="tns:MapResponse"/>
+    </message>
+
+    <!-- Definición del puerto y operaciones -->
+    <portType name="BilleteraPortType">
+        <!-- Operación para cargarSaldo -->
+        <operation name="cargarSaldo">
+            <input message="tns:cargarSaldoRequest"/>
+            <output message="tns:cargarSaldoResponse"/>
+        </operation>
+
+        <!-- Operación para realizarCompra -->
+        <operation name="realizarCompra">
+            <input message="tns:realizarCompraRequest"/>
+            <output message="tns:realizarCompraResponse"/>
+        </operation>
+
+        <!-- Operación para confirmarCompra -->
+        <operation name="confirmarCompra">
+            <input message="tns:confirmarCompraRequest"/>
+            <output message="tns:confirmarCompraResponse"/>
+        </operation>
+
+        <!-- Operación para consultarSaldo -->
+        <operation name="consultarSaldo">
+            <input message="tns:consultarSaldoRequest"/>
+            <output message="tns:consultarSaldoResponse"/>
+        </operation>
+    </portType>
+
+    <!-- Enlace para las operaciones -->
+    <binding name="BilleteraBinding" type="tns:BilleteraPortType">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+        <!-- Operación para cargarSaldo -->
+        <operation name="cargarSaldo">
+            <soap:operation soapAction="urn:localhost#cargarSaldo"/>
+            <input>
+                <soap:body use="literal" namespace="urn:localhost" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </input>
+            <output>
+                <soap:body use="literal" namespace="urn:localhost" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </output>
+        </operation>
+
+        <!-- Operación para realizarCompra -->
+        <operation name="realizarCompra">
+            <soap:operation soapAction="urn:localhost#realizarCompra"/>
+            <input>
+                <soap:body use="literal" namespace="urn:localhost" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </input>
+            <output>
+                <soap:body use="literal" namespace="urn:localhost" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </output>
+        </operation>
+
+        <!-- Operación para confirmarCompra -->
+        <operation name="confirmarCompra">
+            <soap:operation soapAction="urn:localhost#confirmarCompra"/>
+            <input>
+                <soap:body use="literal" namespace="urn:localhost" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </input>
+            <output>
+                <soap:body use="literal" namespace="urn:localhost" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </output>
+        </operation>
+
+         <!-- Operación para consultarSaldo -->
+        <operation name="consultarSaldo">
+            <soap:operation soapAction="urn:localhost#consultarSaldo"/>
+            <input>
+                <soap:body use="literal" namespace="urn:localhost" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </input>
+            <output>
+                <soap:body use="literal" namespace="urn:localhost" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </output>
+        </operation>
+    </binding>
+
+    <!-- Servicio -->
+    <service name="BilleteraService">
+        <port name="BilleteraPort" binding="tns:BilleteraBinding">
+            <soap:address location="http://localhost:8000/soap/billetera"/>
+        </port>
+    </service>
+
+</definitions>
