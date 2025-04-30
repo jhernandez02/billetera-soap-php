@@ -53,8 +53,8 @@ class BilleteraService
     {
         $billeteraId = (int)$data['billetera_id'];
         $monto = $data['monto'];
-        $url_host = 'http://localhost:9000';
-        //$url_host = $data['url_host'] ?? $_SERVER['APP_HOST_API_REST'];
+        //$url_host = 'http://localhost:9000';
+        $url_host = $data['url_host'] ?? $_SERVER['APP_HOST_API_REST'];
         $billetera = $this->billeteraRepository->find($billeteraId);
 
         if (!$billetera) {
