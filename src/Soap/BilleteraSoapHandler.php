@@ -52,6 +52,7 @@ class BilleteraSoapHandler
                 'cod_error' => '00',
                 'message_error' => '',
                 'data' => SoapHelper::toSoapMap([
+                    'url_host' => $result['url_host'],
                     'codigo_confirmacion' => $result['codigo_confirmacion'],
                     'sesion_id' => $result['sesion_id'],
                     'monto_compra' => $result['monto'],

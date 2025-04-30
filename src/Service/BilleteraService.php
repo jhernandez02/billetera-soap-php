@@ -75,13 +75,14 @@ class BilleteraService
         $sesionId = $this->sessionHelper->getId();
 
         $datosCompra = [
+            'url_host' => $url_host,
             'monto' => $monto,
             'codigo_confirmacion' => $codigoConfirmacion,
             'sesion_id' => $sesionId,
         ];
         
         $this->transaccionRepository->registrarCompra($billetera, $datosCompra);
-        $mensaje = "Haz clic en este enlace para confirmar tu pago: $url_host/confirmarpago/$codigoConfirmacion/$sesionId";
+        $mensaje = 'Haz clic en este enlace para confirmar tu pago por $'.$monto.': <a href="'.$url_host/confirmarpago/$codigoConfirmacion/$sesionId.'" target="_blank">Confirmar pago<a>';
         $this->notificacionService->enviarCorreo($cliente->getEmail(), 'Confirmar Pago', $mensaje);
 
         return $datosCompra;
