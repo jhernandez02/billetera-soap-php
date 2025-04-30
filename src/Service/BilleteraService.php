@@ -53,6 +53,7 @@ class BilleteraService
     {
         $billeteraId = (int)$data['billetera_id'];
         $monto = $data['monto'];
+        $url_host = $data['url_host'] ?? $_SERVER['APP_HOST_API_REST'];
         
         $billetera = $this->billeteraRepository->find($billeteraId);
 
@@ -80,8 +81,7 @@ class BilleteraService
         ];
         
         $this->transaccionRepository->registrarCompra($billetera, $datosCompra);
-        $appHostApiRest = getenv('APP_HOST_API_REST');
-        $mensaje = "Haz clic en este enlace para confirmar tu pago: $appHostApiRest/confirmarpago/$codigoConfirmacion/$sesionId";
+        $mensaje = "Haz clic en este enlace para confirmar tu pago: $url_host/confirmarpago/$codigoConfirmacion/$sesionId";
         $this->notificacionService->enviarCorreo($cliente->getEmail(), 'Confirmar Pago', $mensaje);
 
         return $datosCompra;
@@ -128,5 +128,26 @@ class BilleteraService
             'saldo' => $billetera->getSaldo(),
             'cliente' => $cliente->getNombres(),
         ];
+    }
+
+    public function historialMovimientos(array $data)
+    {
+        $clienteId = (int)$data['cliente_id'];
+        $cliente = $this->clienteRepository->find($clienteId);
+        $billetera = $cliente->getBilletera();
+        $transacciones = $billetera->getTransacciones();
+        $result = [];
+        
+        if ($transacciones) {
+            foreach($transacciones as $transaccion){
+                $result[] = [
+                    'tipo' => $transaccion->getTipo(),
+                    'descripcion' => $transaccion->getDescripcion(),
+                    'monto' => $transaccion->getMonto(),
+                    'estado' => $transaccion->getEstado(),
+                ];
+            }
+        }
+        return $result;
     }
 }

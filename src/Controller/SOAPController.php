@@ -25,7 +25,7 @@ final class SOAPController extends AbstractController{
     public function cliente(Request $request,  ClienteService $clienteService): Response
     {
         $wsdl = __DIR__ . '/../Resources/wsdl/cliente.wsdl';
-        $app_host = getenv('APP_HOST');
+        $app_host = $_SERVER['APP_HOST'];
 
         $server = new \SoapServer($wsdl, [
             'uri' => $app_host.'/soap/cliente',
@@ -47,7 +47,7 @@ final class SOAPController extends AbstractController{
     public function billetera(Request $request,  BilleteraService $billeteraService): Response
     {
         $wsdl = $this->getParameter('kernel.project_dir') . '/src/Resources/wsdl/billetera.wsdl';
-        $app_host = getenv('APP_HOST');
+        $app_host = $_SERVER['APP_HOST'];
 
         $server = new \SoapServer($wsdl, [
             'uri' => $app_host.'/soap/billetera',

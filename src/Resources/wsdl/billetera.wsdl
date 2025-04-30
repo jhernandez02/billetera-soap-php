@@ -49,6 +49,33 @@
                     <xsd:element name="data" type="tns:Map"/>
                 </xsd:sequence>
             </xsd:complexType>
+
+            <!-- Tipo HistorialItem -->
+            <xsd:complexType name="HistorialItem">
+                <xsd:sequence>
+                    <xsd:element name="tipo" type="xsd:string"/>
+                    <xsd:element name="descripcion" type="xsd:string"/>
+                    <xsd:element name="monto" type="xsd:float"/>
+                    <xsd:element name="estado" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <!-- Tipo Data con array de Historial -->
+            <xsd:complexType name="HistorialArray">
+                <xsd:sequence>
+                    <xsd:element name="historial" type="tns:HistorialItem" minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <!-- Tipo de Respuesta -->
+            <xsd:complexType name="HistorialResponse">
+                <xsd:sequence>
+                    <xsd:element name="success" type="xsd:boolean"/>
+                    <xsd:element name="cod_error" type="xsd:string"/>
+                    <xsd:element name="message_error" type="xsd:string"/>
+                    <xsd:element name="data" type="tns:HistorialArray"/>
+                </xsd:sequence>
+            </xsd:complexType>
         </xsd:schema>
     </types>
 
@@ -84,6 +111,14 @@
         <part name="return" type="tns:MapResponse"/>
     </message>
 
+    <!-- Mensajes para consultarHistorial -->
+    <message name="consultarHistorialRequest">
+        <part name="data" type="tns:ItemArray"/>
+    </message>
+    <message name="consultarHistorialResponse">
+        <part name="return" type="tns:HistorialResponse"/>
+    </message>
+
     <!-- Definición del puerto y operaciones -->
     <portType name="BilleteraPortType">
         <!-- Operación para cargarSaldo -->
@@ -108,6 +143,12 @@
         <operation name="consultarSaldo">
             <input message="tns:consultarSaldoRequest"/>
             <output message="tns:consultarSaldoResponse"/>
+        </operation>
+
+        <!-- Operación para consultarHistorial -->
+        <operation name="consultarHistorial">
+            <input message="tns:consultarHistorialRequest"/>
+            <output message="tns:consultarHistorialResponse"/>
         </operation>
     </portType>
 
@@ -148,9 +189,20 @@
             </output>
         </operation>
 
-         <!-- Operación para consultarSaldo -->
+        <!-- Operación para consultarSaldo -->
         <operation name="consultarSaldo">
             <soap:operation soapAction="urn:localhost#consultarSaldo"/>
+            <input>
+                <soap:body use="literal" namespace="urn:localhost" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </input>
+            <output>
+                <soap:body use="literal" namespace="urn:localhost" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </output>
+        </operation>
+
+        <!-- Operación para consultarHistorial -->
+        <operation name="consultarHistorial">
+            <soap:operation soapAction="urn:localhost#consultarHistorial"/>
             <input>
                 <soap:body use="literal" namespace="urn:localhost" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
             </input>

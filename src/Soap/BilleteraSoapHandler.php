@@ -124,4 +124,27 @@ class BilleteraSoapHandler
             ];
         }
     }
+
+    public function consultarHistorial($content): array
+    {
+        $data = SoapHelper::toArray($content);
+        
+        try {
+            $result = $this->service->historialMovimientos($data);
+            $response = [
+                'success'=> true,
+                'cod_error' => '00',
+                'message_error' => '',
+                'data' => $result,
+            ];
+            return $response;
+        } catch (\Exception $e) {
+            return [
+                'success'=> false,
+                'cod_error' => '500',
+                'message_error' => $e->getMessage(),
+                'data' => [],
+            ];
+        }
+    }
 }

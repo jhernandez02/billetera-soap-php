@@ -68,6 +68,14 @@
         <part name="return" type="tns:MapResponse"/>
     </message>
 
+    <!-- Mensajes para datosCliente -->
+    <message name="datosClienteRequest">
+        <part name="data" type="tns:ItemArray"/>
+    </message>
+    <message name="datosClienteResponse">
+        <part name="return" type="tns:MapResponse"/>
+    </message>
+
     <!-- Definición del puerto y operaciones -->
     <portType name="BilleteraPortType">
         <!-- Operación para registrarCliente -->
@@ -76,10 +84,16 @@
             <output message="tns:registrarClienteResponse"/>
         </operation>
 
-         <!-- Operación para loginCliente -->
+        <!-- Operación para loginCliente -->
         <operation name="loginCliente">
             <input message="tns:loginClienteRequest"/>
             <output message="tns:loginClienteResponse"/>
+        </operation>
+
+        <!-- Operación para datosCliente -->
+        <operation name="datosCliente">
+            <input message="tns:datosClienteRequest"/>
+            <output message="tns:datosClienteResponse"/>
         </operation>
     </portType>
 
@@ -101,6 +115,17 @@
         <!-- Operación para loginCliente -->
         <operation name="loginCliente">
             <soap:operation soapAction="urn:localhost#loginCliente"/>
+            <input>
+                <soap:body use="literal" namespace="urn:localhost" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </input>
+            <output>
+                <soap:body use="literal" namespace="urn:localhost" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </output>
+        </operation>
+
+        <!-- Operación para datosCliente -->
+        <operation name="datosCliente">
+            <soap:operation soapAction="urn:localhost#datosCliente"/>
             <input>
                 <soap:body use="literal" namespace="urn:localhost" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
             </input>

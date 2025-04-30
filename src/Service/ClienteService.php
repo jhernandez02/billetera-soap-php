@@ -17,11 +17,26 @@ class ClienteService
         $this->billeteraRepository = $billeteraRepository;
     }
 
-    public function registrarCliente(array $data): Cliente
+    public function registrarCliente(array $data): ?Cliente
     {
-        $cliente = $this->clienteRepository->registrar($data);
-        $this->billeteraRepository->registrar($cliente);
+        $documento = $data['documento'];
+        $email = $data['email'];
 
+        $cliente = $this->clienteRepository->createQueryBuilder('c')
+            ->where('c.documento = :documento')
+            ->orWhere('c.email = :email')
+            ->setParameter('documento', $documento)
+            ->setParameter('email', $email)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        if ($cliente) {
+            throw new \Exception("El documento o correo ya ha sido registrado");
+        }
+
+        $nuevoCliente = $this->clienteRepository->registrar($data);
+        $this->billeteraRepository->registrar($nuevoCliente);
+        
         return $cliente;
     }
 
@@ -43,5 +58,17 @@ class ClienteService
         } else {
             throw new \Exception("Credenciales incorrectas - 002");
         }
+    }
+
+    public function datosCliente(array $data): ?Cliente
+    {
+        $idcliente = $data['id'];
+        $cliente = $this->clienteRepository->find($idcliente);
+
+        if (!$cliente) {
+            throw new \Exception("El usuario no existe");
+        }
+
+        return $cliente;
     }
 }

@@ -59,11 +59,42 @@ class ClienteSoapHandler
                 'message_error' => '',
                 'data' => SoapHelper::toSoapMap([
                     'id' => $cliente->getId(),
+                    'email' => $cliente->getEmail(),
+                ]),
+            ];
+
+            return $response;
+        } catch (\Exception $e) {
+            return [
+                'success'=> false,
+                'cod_error' => '500',
+                'message_error' => $e->getMessage(),
+                'data' => [],
+            ];
+        }
+    }
+
+    public function datosCliente($content): array
+    {
+        $data = SoapHelper::toArray($content);
+        
+        try {
+            $cliente = $this->service->datosCliente($data);
+            $billetera = $cliente->getBilletera();
+            
+            $response = [
+                'success'=> true,
+                'cod_error' => '00',
+                'message_error' => '',
+                'data' => SoapHelper::toSoapMap([
+                    'id' => $cliente->getId(),
                     'documento' => $cliente->getDocumento(),
                     'nombres' => $cliente->getNombres(),
                     'email' => $cliente->getEmail(),
                     'celular' => $cliente->getCelular(),
                     'estado' => $cliente->getEstado(),
+                    'billetera_id' => $billetera->getId(),
+                    'saldo' => $billetera->getSaldo(),
                 ]),
             ];
 
