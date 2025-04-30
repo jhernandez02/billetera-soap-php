@@ -53,8 +53,8 @@ class BilleteraService
     {
         $billeteraId = (int)$data['billetera_id'];
         $monto = $data['monto'];
-        $url_host = $data['url_host'] ?? $_SERVER['APP_HOST_API_REST'];
-        
+        $url_host = 'http://localhost:9000';
+        //$url_host = $data['url_host'] ?? $_SERVER['APP_HOST_API_REST'];
         $billetera = $this->billeteraRepository->find($billeteraId);
 
         if (!$billetera) {
@@ -82,7 +82,8 @@ class BilleteraService
         ];
         
         $this->transaccionRepository->registrarCompra($billetera, $datosCompra);
-        $mensaje = 'Haz clic en este enlace para confirmar tu pago por $'.$monto.': <a href="'.$url_host/confirmarpago/$codigoConfirmacion/$sesionId.'" target="_blank">Confirmar pago<a>';
+        $mensaje = '<p>Haz clic en este enlace para confirmar tu pago por $'.$monto.':<p>';
+        $mensaje.= '<p><a href="'.$url_host.'/confirmarpago/'.$codigoConfirmacion.'/'.$sesionId.'" target="_blank">Confirmar pago<a></p>';
         $this->notificacionService->enviarCorreo($cliente->getEmail(), 'Confirmar Pago', $mensaje);
 
         return $datosCompra;
