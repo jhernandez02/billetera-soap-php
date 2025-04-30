@@ -37,7 +37,7 @@ class ClienteService
         $nuevoCliente = $this->clienteRepository->registrar($data);
         $this->billeteraRepository->registrar($nuevoCliente);
         
-        return $cliente;
+        return $nuevoCliente;
     }
 
     public function loginCliente(array $data): ?Cliente
